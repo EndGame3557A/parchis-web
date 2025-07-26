@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Tablero de Parchís</title>
+  <title>Parchís con Fichas Móviles</title>
   <style>
     body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color:#333 }
     canvas { border: 2px solid #333; }
@@ -14,26 +14,93 @@
     const canvas = document.getElementById('parchis');
     const ctx = canvas.getContext('2d');
 
-const img = new Image();
-img.src = 'tierra.jpg'; // Cambia por la ruta de tu imagen
+    const img = new Image();
+    img.src = 'tierra.jpg'; // Cambia por tu imagen de fondo
 
-img.onload = function() {
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const fichas = [
+  // Fichas rojas (esquina superior izquierda)
+  { x: 75, y: 75, color: "red", dragging: false },
+  { x: 125, y: 125, color: "red", dragging: false },
+  { x: 75, y: 125, color: "red", dragging: false },
+  { x: 125, y: 75, color: "red", dragging: false },
 
-ctx.fillStyle = "red";    
-ctx.fillRect(5, 5, 195, 195);
+  // Fichas naranjas (esquina superior derecha)
+  { x: 475, y: 75, color: "orange", dragging: false },
+  { x: 525, y: 125, color: "orange", dragging: false },
+  { x: 475, y: 125, color: "orange", dragging: false },
+  { x: 525, y: 75, color: "orange", dragging: false },
 
-ctx.fillStyle = "orange";
-ctx.fillRect(400, 5, 195, 195)
+  // Fichas verdes (esquina inferior izquierda)
+  { x: 75, y: 475, color: "green", dragging: false },
+  { x: 125, y: 525, color: "green", dragging: false },
+  { x: 125, y: 475, color: "green", dragging: false },
+  { x: 75, y: 525, color: "green", dragging: false },
 
-ctx.fillStyle = "blue";
-ctx.fillRect(400, 400, 195, 195)
+  // Fichas azules (esquina inferior derecha)
+  { x: 475, y: 475, color: "blue", dragging: false },
+  { x: 525, y: 525, color: "blue", dragging: false },
+  { x: 475, y: 525, color: "blue", dragging: false },
+  { x: 525, y: 475, color: "blue", dragging: false }
+];
 
-ctx.fillStyle = "green"
-ctx.fillRect(5, 400, 195, 195)
+
+    let fichaSeleccionada = null;
+
+    function dibujarTablero() {
+      // Tu código del tablero va aquí — si es muy largo, lo puedes mantener como estaba.
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "red";    
+      ctx.fillRect(5, 5, 195, 195);
+      ctx.fillStyle = "orange";
+      ctx.fillRect(400, 5, 195, 195);
+      ctx.fillStyle = "blue";
+      ctx.fillRect(400, 400, 195, 195);
+      ctx.fillStyle = "green";
+      ctx.fillRect(5, 400, 195, 195);
+
+      // Triángulo central
+      ctx.beginPath();
+      ctx.moveTo(230, 230);
+      ctx.lineTo(230, 370);
+      ctx.lineTo(300, 300);
+      ctx.closePath();
+      ctx.fillStyle = "green";
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(230, 230);
+      ctx.lineTo(370, 230);
+      ctx.lineTo(300, 300);
+      ctx.closePath();
+      ctx.fillStyle = "red";
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(370, 370);
+      ctx.lineTo(370, 230);
+      ctx.lineTo(300, 300);
+      ctx.closePath();
+      ctx.fillStyle = "orange";
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(370, 370);
+      ctx.lineTo(230, 370);
+      ctx.lineTo(300, 300);
+      ctx.closePath();
+      ctx.fillStyle = "blue";
+      ctx.fill();
 
 
-ctx.beginPath();               // Empieza un nuevo camino
+
+
+ctx.beginPath();  
+ctx.fillStyle="lightblue"  
+ctx.lineWidth = 3           // Empieza un nuevo camino
 ctx.moveTo(200, 5);            // Punto de inicio (x, y)
 ctx.lineTo(200, 200); 
 ctx.lineTo(400,200);
@@ -121,6 +188,8 @@ ctx.moveTo(370,265)
 ctx.lineTo(595,265)
 ctx.moveTo(370,334)
 ctx.lineTo(595,335)
+ctx.moveTo(230,370)
+ctx.lineTo(370,370)
 
 ctx.moveTo(200,200)
 ctx.lineTo(230,230)
@@ -135,59 +204,72 @@ ctx.moveTo(400,400)
 ctx.lineTo(370,370)
 
 
-
-ctx.strokeStyle = "lightblue";     // Color de la línea
-ctx.lineWidth = 3; 
-
-               // Empieza un nuevo camino
-
-ctx.stroke(); 
-
-ctx.beginPath();
-ctx.moveTo(230, 230);        // Primer punto
-ctx.lineTo(230, 370);        // Segundo punto
-ctx.lineTo(300, 300);        // Tercer punto
-ctx.closePath();             // Cierra el triángulo
-ctx.fillStyle = "green";
-ctx.fill();
-ctx.stroke();
-
-ctx.beginPath();
-ctx.moveTo(230, 230);        // Primer punto
-ctx.lineTo(370, 230);        // Segundo punto
-ctx.lineTo(300, 300);        // Tercer punto
-ctx.closePath();             // Cierra el triángulo
-ctx.fillStyle = "red";
-ctx.fill();
-ctx.stroke();
-
-ctx.beginPath();
-ctx.moveTo(370, 370);        // Primer punto
-ctx.lineTo(370, 230);        // Segundo punto
-ctx.lineTo(300, 300);        // Tercer punto
-ctx.closePath();             // Cierra el triángulo
-ctx.fillStyle = "orange";
-ctx.fill();
-ctx.stroke();
-
-ctx.beginPath();
-ctx.moveTo(370, 370);        // Primer punto
-ctx.lineTo(230, 370);        // Segundo punto
-ctx.lineTo(300, 300);        // Tercer punto
-ctx.closePath();             // Cierra el triángulo
-ctx.fillStyle = "blue";
-ctx.fill();
-ctx.stroke();
+      ctx.stroke();
 
 
-};
 
-//     ctx.beginPath();               // Empieza un nuevo camino
-// ctx.moveTo(40, 40);            // Punto de inicio (x, y)
-// ctx.lineTo(200, 100);          // Punto final (x, y)
-// ctx.strokeStyle = "black";     // Color de la línea
-// ctx.lineWidth = 2;             // Grosor de la línea
-// ctx.stroke();                  // Dibuja la línea
-</script>
+      
+    }
+
+    function dibujarFichas() {
+      for (let ficha of fichas) {
+        ctx.beginPath();
+        ctx.arc(ficha.x, ficha.y, 10, 0, 2 * Math.PI);
+        ctx.fillStyle = ficha.color;
+        ctx.fill();
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    }
+
+    function redibujarTodo() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      dibujarTablero();
+      dibujarFichas();
+    }
+
+    function fichaBajoMouse(x, y) {
+      for (let ficha of fichas) {
+        let dx = ficha.x - x;
+        let dy = ficha.y - y;
+        if (Math.sqrt(dx * dx + dy * dy) < 20) {
+          return ficha;
+        }
+      }
+      return null;
+    }
+
+    canvas.addEventListener("mousedown", function (e) {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      fichaSeleccionada = fichaBajoMouse(mouseX, mouseY);
+      if (fichaSeleccionada) fichaSeleccionada.dragging = true;
+    });
+
+    canvas.addEventListener("mousemove", function (e) {
+      if (fichaSeleccionada && fichaSeleccionada.dragging) {
+        const rect = canvas.getBoundingClientRect();
+        fichaSeleccionada.x = e.clientX - rect.left;
+        fichaSeleccionada.y = e.clientY - rect.top;
+        redibujarTodo();
+      }
+    });
+
+    canvas.addEventListener("mouseup", function () {
+      if (fichaSeleccionada) fichaSeleccionada.dragging = false;
+      fichaSeleccionada = null;
+    });
+
+    img.onload = function () {
+      redibujarTodo();
+    };
+  </script>
 </body>
 </html>
+
+
+
+
+
