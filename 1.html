@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tablero de Parchís</title>
+  <style>
+    body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color:#333 }
+    canvas { border: 2px solid #333; }
+  </style>
+</head>
+<body>
+  <canvas id="parchis" width="600" height="600"></canvas>
+  <script>
+    const canvas = document.getElementById('parchis');
+    const ctx = canvas.getContext('2d');
+
+const img = new Image();
+img.src = 'tierra.jpg'; // Cambia por la ruta de tu imagen
+
+img.onload = function() {
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+ctx.fillStyle = "red";    
+ctx.fillRect(5, 5, 195, 195);
+
+ctx.fillStyle = "orange";
+ctx.fillRect(400, 5, 195, 195)
+
+ctx.fillStyle = "blue";
+ctx.fillRect(400, 400, 195, 195)
+
+ctx.fillStyle = "green"
+ctx.fillRect(5, 400, 195, 195)
+
+
+ctx.beginPath();               // Empieza un nuevo camino
+ctx.moveTo(200, 5);            // Punto de inicio (x, y)
+ctx.lineTo(200, 200); 
+ctx.lineTo(400,200);
+ctx.lineTo(400,5);
+ctx.lineTo(200,5);
+ctx.lineTo(265,5);
+ctx.lineTo(265,230);
+ctx.lineTo(335,230);
+ctx.lineTo(335,5)
+ctx.moveTo(400,28.57)
+ctx.lineTo(200,28.57)
+ctx.moveTo(200,28.57*2)
+ctx.lineTo(400,28.57*2)
+ctx.moveTo(400,28.57*3)
+ctx.lineTo(200,28.57*3)
+ctx.moveTo(200,28.57*4)
+ctx.lineTo(400,28.57*4)
+ctx.moveTo(400,28.57*5)
+ctx.lineTo(200,28.57*5)
+ctx.moveTo(200,28.57*6)
+ctx.lineTo(400,28.57*6)
+
+ctx.moveTo(5,200)
+ctx.lineTo(5,400)
+ctx.lineTo(200,400)
+ctx.lineTo(200,200)
+ctx.lineTo(5,200)
+ctx.lineTo(28.57,200)
+ctx.lineTo(28.57,400)
+ctx.lineTo(28.57*2,400)
+ctx.lineTo(28.57*2,200)
+ctx.lineTo(28.57*3,200)
+ctx.lineTo(28.57*3,400)
+ctx.lineTo(28.57*4,400)
+ctx.lineTo(28.57*4,200)
+ctx.lineTo(28.57*5,200)
+ctx.lineTo(28.57*5,400)
+ctx.lineTo(28.57*6,400)
+ctx.lineTo(28.57*6,200)
+ctx.moveTo(5,265)
+ctx.lineTo(230,265)
+ctx.moveTo(5,335)
+ctx.lineTo(230,335)
+
+ctx.moveTo(200, 400);            // Punto de inicio (x, y)
+ctx.lineTo(400, 400);
+ctx.lineTo(400,595)
+ctx.lineTo(200,595)
+ctx.lineTo(200,400)
+ctx.moveTo(265,370)
+ctx.lineTo(265,595)
+ctx.moveTo(335,370)
+ctx.lineTo(335,595)
+ctx.moveTo(400,595-28.57)
+ctx.lineTo(200,595-28.57)
+ctx.moveTo(200,595-28.57*2)
+ctx.lineTo(400,595-28.57*2)
+ctx.moveTo(400,595-28.57*3)
+ctx.lineTo(200,595-28.57*3)
+ctx.moveTo(200,595-28.57*4)
+ctx.lineTo(400,595-28.57*4)
+ctx.moveTo(400,595-28.57*5)
+ctx.lineTo(200,595-28.57*5)
+ctx.moveTo(200,595-28.57*6)
+ctx.lineTo(400,595-28.57*6)
+
+ctx.moveTo(400,200)
+ctx.lineTo(595,200)
+ctx.lineTo(595,400)
+ctx.lineTo(400,400)
+ctx.lineTo(400,200)
+ctx.lineTo(595-28.57,200)
+ctx.lineTo(595-28.57,400)
+ctx.lineTo(595-28.57*2,400)
+ctx.lineTo(595-28.57*2,200)
+ctx.lineTo(595-28.57*3,200)
+ctx.lineTo(595-28.57*3,400)
+ctx.lineTo(595-28.57*4,400)
+ctx.lineTo(595-28.57*4,200)
+ctx.lineTo(595-28.57*5,200)
+ctx.lineTo(595-28.57*5,400)
+ctx.lineTo(595-28.57*6,400)
+ctx.lineTo(595-28.57*6,200)
+ctx.moveTo(370,265)
+ctx.lineTo(595,265)
+ctx.moveTo(370,334)
+ctx.lineTo(595,335)
+
+ctx.moveTo(200,200)
+ctx.lineTo(230,230)
+
+ctx.moveTo(200,400)
+ctx.lineTo(230,370)
+
+ctx.moveTo(400,200)
+ctx.lineTo(370,230)
+
+ctx.moveTo(400,400)
+ctx.lineTo(370,370)
+
+
+
+ctx.strokeStyle = "lightblue";     // Color de la línea
+ctx.lineWidth = 3; 
+
+               // Empieza un nuevo camino
+
+ctx.stroke(); 
+
+ctx.beginPath();
+ctx.moveTo(230, 230);        // Primer punto
+ctx.lineTo(230, 370);        // Segundo punto
+ctx.lineTo(300, 300);        // Tercer punto
+ctx.closePath();             // Cierra el triángulo
+ctx.fillStyle = "green";
+ctx.fill();
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(230, 230);        // Primer punto
+ctx.lineTo(370, 230);        // Segundo punto
+ctx.lineTo(300, 300);        // Tercer punto
+ctx.closePath();             // Cierra el triángulo
+ctx.fillStyle = "red";
+ctx.fill();
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(370, 370);        // Primer punto
+ctx.lineTo(370, 230);        // Segundo punto
+ctx.lineTo(300, 300);        // Tercer punto
+ctx.closePath();             // Cierra el triángulo
+ctx.fillStyle = "orange";
+ctx.fill();
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(370, 370);        // Primer punto
+ctx.lineTo(230, 370);        // Segundo punto
+ctx.lineTo(300, 300);        // Tercer punto
+ctx.closePath();             // Cierra el triángulo
+ctx.fillStyle = "blue";
+ctx.fill();
+ctx.stroke();
+
+
+};
+
+//     ctx.beginPath();               // Empieza un nuevo camino
+// ctx.moveTo(40, 40);            // Punto de inicio (x, y)
+// ctx.lineTo(200, 100);          // Punto final (x, y)
+// ctx.strokeStyle = "black";     // Color de la línea
+// ctx.lineWidth = 2;             // Grosor de la línea
+// ctx.stroke();                  // Dibuja la línea
+</script>
+</body>
+</html>
