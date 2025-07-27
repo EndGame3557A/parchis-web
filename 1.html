@@ -4,15 +4,108 @@
   <meta charset="UTF-8">
   <title>Parchís con Fichas Móviles</title>
   <style>
-    body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color:#333 }
-    canvas { border: 2px solid #333; }
-  </style>
+ body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #333;
+      font-family: sans-serif;
+      color: white;
+    }
+    #parchis {
+      border: 2px solid white;
+      margin-bottom: 20px;
+    }
+    #dados {
+      border: 2px solid white;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #555;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #777;
+    }
+  </style>  </style>
 </head>
 <body>
   <canvas id="parchis" width="600" height="600"></canvas>
+  <canvas id="dados" width="200" height="100"></canvas>
+  <button onclick="lanzarDados()">Lanzar Dados</button>
   <script>
     const canvas = document.getElementById('parchis');
     const ctx = canvas.getContext('2d');
+
+    const dadoCanvas = document.getElementById('dados');
+    const dadoCtx = dadoCanvas.getContext('2d');
+
+    let dado1 = 1;
+    let dado2 = 1;
+
+    function moverFichaDelTurno(pasos) {
+  const color = coloresTurno[turnoActual];
+  const fichasColor = fichas.filter(f => f.color === color);
+
+  // Solo mover la primera por ahora
+  const ficha = fichasColor[0];
+  if (!ficha) return;
+
+  // Movimiento de prueba: hacia la derecha
+  ficha.x += pasos * 28; // 28 ≈ tamaño de una casilla
+  redibujarTodo();
+}
+
+
+
+    function lanzarDados() {
+      dado1 = Math.floor(Math.random() * 6) + 1;
+      dado2 = Math.floor(Math.random() * 6) + 1;
+      dibujarDados();
+      
+      moverFichaDelTurno(dado1 + dado2);
+
+  // Pasar al siguiente turno
+  turnoActual = (turnoActual + 1) % coloresTurno.length;
+}
+
+    function dibujarDado(x, y, valor) {
+      dadoCtx.fillStyle = "#fff";
+      dadoCtx.fillRect(x, y, 40, 40);
+      dadoCtx.strokeStyle = "#000";
+      dadoCtx.strokeRect(x, y, 40, 40);
+
+      dadoCtx.fillStyle = "#000";
+      const cx = x + 20;
+      const cy = y + 20;
+      const r = 3;
+
+      const puntos = {
+        1: [[cx, cy]],
+        2: [[x + 10, y + 10], [x + 30, y + 30]],
+        3: [[x + 10, y + 10], [cx, cy], [x + 30, y + 30]],
+        4: [[x + 10, y + 10], [x + 30, y + 10], [x + 10, y + 30], [x + 30, y + 30]],
+        5: [[x + 10, y + 10], [x + 30, y + 10], [cx, cy], [x + 10, y + 30], [x + 30, y + 30]],
+        6: [[x + 10, y + 10], [x + 10, y + 20], [x + 10, y + 30], [x + 30, y + 10], [x + 30, y + 20], [x + 30, y + 30]],
+      };
+
+      for (let [px, py] of puntos[valor]) {
+        dadoCtx.beginPath();
+        dadoCtx.arc(px, py, r, 0, 2 * Math.PI);
+        dadoCtx.fill();
+      }
+    }
+
+    function dibujarDados() {
+      dadoCtx.clearRect(0, 0, dadoCanvas.width, dadoCanvas.height);
+      dibujarDado(40, 30, dado1);
+      dibujarDado(120, 30, dado2);
+    }
 
     const img = new Image();
     img.src = 'tierra.jpg'; // Cambia por tu imagen de fondo
@@ -51,13 +144,13 @@
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = "red";    
-      ctx.fillRect(5, 5, 195, 195);
+      ctx.fillRect(0, 0, 200, 200);
       ctx.fillStyle = "orange";
-      ctx.fillRect(400, 5, 195, 195);
+      ctx.fillRect(400, 0, 200, 200);
       ctx.fillStyle = "blue";
-      ctx.fillRect(400, 400, 195, 195);
+      ctx.fillRect(400, 400, 200, 200);
       ctx.fillStyle = "green";
-      ctx.fillRect(5, 400, 195, 195);
+      ctx.fillRect(0, 400, 200, 200);
 
       // Triángulo central
       ctx.beginPath();
@@ -66,6 +159,26 @@
       ctx.lineTo(300, 300);
       ctx.closePath();
       ctx.fillStyle = "green";
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath()
+      ctx.moveTo(28.57*4,400)
+      ctx.lineTo(28.57*4,265)
+      ctx.lineTo(28.57*5,265)
+      ctx.lineTo(28.57*5,400)
+      ctx.closePath()
+      ctx.fillStyle = "green"
+      ctx.fill();
+      ctx.stroke()
+
+      ctx.beginPath()
+      ctx.moveTo(200,600-28.57*4)
+      ctx.lineTo(265,600-28.57*4)
+      ctx.lineTo(265,600-28.57*5)
+      ctx.lineTo(200,600-28.57*5)
+      ctx.closePath()
+      ctx.fillStyle = "green"
       ctx.fill();
       ctx.stroke();
 
@@ -78,12 +191,52 @@
       ctx.fill();
       ctx.stroke();
 
+      ctx.beginPath()
+      ctx.moveTo(28.57*4,200)
+      ctx.lineTo(28.57*4,265)
+      ctx.lineTo(28.57*5,265)
+      ctx.lineTo(28.57*5,200)
+      ctx.closePath()
+      ctx.fillStyle = "red"
+      ctx.fill();
+      ctx.stroke()
+
+      ctx.beginPath()
+      ctx.moveTo(200,28.57*4)
+      ctx.lineTo(265,28.57*4)
+      ctx.lineTo(265,28.57*5)
+      ctx.lineTo(200,28.57*5)
+      ctx.closePath()
+      ctx.fillStyle = "red"
+      ctx.fill();
+      ctx.stroke();
+
       ctx.beginPath();
       ctx.moveTo(370, 370);
       ctx.lineTo(370, 230);
       ctx.lineTo(300, 300);
       ctx.closePath();
       ctx.fillStyle = "orange";
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath()
+      ctx.moveTo(600-28.57*4,200)
+      ctx.lineTo(600-28.57*4,265)
+      ctx.lineTo(600-28.57*5,265)
+      ctx.lineTo(600-28.57*5,200)
+      ctx.closePath()
+      ctx.fillStyle = "orange"
+      ctx.fill();
+      ctx.stroke()
+
+      ctx.beginPath()
+      ctx.moveTo(400,28.57*4)
+      ctx.lineTo(335,28.57*4)
+      ctx.lineTo(335,28.57*5)
+      ctx.lineTo(400,28.57*5)
+      ctx.closePath()
+      ctx.fillStyle = "orange"
       ctx.fill();
       ctx.stroke();
 
@@ -95,21 +248,79 @@
       ctx.fillStyle = "blue";
       ctx.fill();
 
+      ctx.beginPath()
+      ctx.moveTo(600-28.57*4,400)
+      ctx.lineTo(600-28.57*4,335)
+      ctx.lineTo(600-28.57*5,335)
+      ctx.lineTo(600-28.57*5,400)
+      ctx.closePath()
+      ctx.fillStyle = "blue"
+      ctx.fill();
+      ctx.stroke()
 
+      ctx.beginPath()
+      ctx.moveTo(400,600-28.57*4)
+      ctx.lineTo(335,600-28.57*4)
+      ctx.lineTo(335,600-28.57*5)
+      ctx.lineTo(400,600-28.57*5)
+      ctx.closePath()
+      ctx.fillStyle = "blue"
+      ctx.fill();
+      ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(265,0)
+ctx.lineTo(265,230)
+ctx.lineTo(335,230)
+ctx.lineTo(335,0)
+ctx.lineTo(265,0)
+ctx.closePath();
+ctx.fillStyle = "red"
+ctx.fill();
+
+ctx.beginPath();
+ctx.moveTo(0,265)
+ctx.lineTo(230,265)
+ctx.lineTo(230,335)
+ctx.lineTo(0,335)
+ctx.lineTo(0,265)
+ctx.closePath();
+ctx.fillStyle = "green"
+ctx.fill();
+
+ctx.beginPath();
+ctx.moveTo(265,600)
+ctx.lineTo(265,370)
+ctx.lineTo(335,370)
+ctx.lineTo(335,600)
+ctx.lineTo(265,600)
+ctx.closePath();
+ctx.fillStyle = "blue"
+ctx.fill();
+
+ctx.beginPath();
+ctx.moveTo(600,265)
+ctx.lineTo(370,265)
+ctx.lineTo(370,335)
+ctx.lineTo(600,335)
+ctx.lineTo(600,265)
+ctx.closePath();
+ctx.fillStyle = "orange"
+ctx.fill();
 
 
 ctx.beginPath();  
 ctx.fillStyle="lightblue"  
 ctx.lineWidth = 3           // Empieza un nuevo camino
-ctx.moveTo(200, 5);            // Punto de inicio (x, y)
+ctx.moveTo(200,0);            // Punto de inicio (x, y)
 ctx.lineTo(200, 200); 
 ctx.lineTo(400,200);
-ctx.lineTo(400,5);
-ctx.lineTo(200,5);
-ctx.lineTo(265,5);
+ctx.lineTo(400,0);
+ctx.lineTo(200,0);
+ctx.lineTo(265,0);
 ctx.lineTo(265,230);
 ctx.lineTo(335,230);
-ctx.lineTo(335,5)
+ctx.lineTo(335,0)
 ctx.moveTo(400,28.57)
 ctx.lineTo(200,28.57)
 ctx.moveTo(200,28.57*2)
@@ -123,11 +334,11 @@ ctx.lineTo(200,28.57*5)
 ctx.moveTo(200,28.57*6)
 ctx.lineTo(400,28.57*6)
 
-ctx.moveTo(5,200)
-ctx.lineTo(5,400)
+ctx.moveTo(0,200)
+ctx.lineTo(0,400)
 ctx.lineTo(200,400)
 ctx.lineTo(200,200)
-ctx.lineTo(5,200)
+ctx.lineTo(0,200)
 ctx.lineTo(28.57,200)
 ctx.lineTo(28.57,400)
 ctx.lineTo(28.57*2,400)
@@ -140,54 +351,54 @@ ctx.lineTo(28.57*5,200)
 ctx.lineTo(28.57*5,400)
 ctx.lineTo(28.57*6,400)
 ctx.lineTo(28.57*6,200)
-ctx.moveTo(5,265)
+ctx.moveTo(0,265)
 ctx.lineTo(230,265)
-ctx.moveTo(5,335)
+ctx.moveTo(0,335)
 ctx.lineTo(230,335)
 
 ctx.moveTo(200, 400);            // Punto de inicio (x, y)
 ctx.lineTo(400, 400);
-ctx.lineTo(400,595)
-ctx.lineTo(200,595)
+ctx.lineTo(400,600)
+ctx.lineTo(200,600)
 ctx.lineTo(200,400)
 ctx.moveTo(265,370)
-ctx.lineTo(265,595)
+ctx.lineTo(265,600)
 ctx.moveTo(335,370)
-ctx.lineTo(335,595)
-ctx.moveTo(400,595-28.57)
-ctx.lineTo(200,595-28.57)
-ctx.moveTo(200,595-28.57*2)
-ctx.lineTo(400,595-28.57*2)
-ctx.moveTo(400,595-28.57*3)
-ctx.lineTo(200,595-28.57*3)
-ctx.moveTo(200,595-28.57*4)
-ctx.lineTo(400,595-28.57*4)
-ctx.moveTo(400,595-28.57*5)
-ctx.lineTo(200,595-28.57*5)
-ctx.moveTo(200,595-28.57*6)
-ctx.lineTo(400,595-28.57*6)
+ctx.lineTo(335,600)
+ctx.moveTo(400,600-28.57)
+ctx.lineTo(200,600-28.57)
+ctx.moveTo(200,600-28.57*2)
+ctx.lineTo(400,600-28.57*2)
+ctx.moveTo(400,600-28.57*3)
+ctx.lineTo(200,600-28.57*3)
+ctx.moveTo(200,600-28.57*4)
+ctx.lineTo(400,600-28.57*4)
+ctx.moveTo(400,600-28.57*5)
+ctx.lineTo(200,600-28.57*5)
+ctx.moveTo(200,600-28.57*6)
+ctx.lineTo(400,600-28.57*6)
 
 ctx.moveTo(400,200)
-ctx.lineTo(595,200)
-ctx.lineTo(595,400)
+ctx.lineTo(600,200)
+ctx.lineTo(600,400)
 ctx.lineTo(400,400)
 ctx.lineTo(400,200)
-ctx.lineTo(595-28.57,200)
-ctx.lineTo(595-28.57,400)
-ctx.lineTo(595-28.57*2,400)
-ctx.lineTo(595-28.57*2,200)
-ctx.lineTo(595-28.57*3,200)
-ctx.lineTo(595-28.57*3,400)
-ctx.lineTo(595-28.57*4,400)
-ctx.lineTo(595-28.57*4,200)
-ctx.lineTo(595-28.57*5,200)
-ctx.lineTo(595-28.57*5,400)
-ctx.lineTo(595-28.57*6,400)
-ctx.lineTo(595-28.57*6,200)
+ctx.lineTo(600-28.57,200)
+ctx.lineTo(600-28.57,400)
+ctx.lineTo(600-28.57*2,400)
+ctx.lineTo(600-28.57*2,200)
+ctx.lineTo(600-28.57*3,200)
+ctx.lineTo(600-28.57*3,400)
+ctx.lineTo(600-28.57*4,400)
+ctx.lineTo(600-28.57*4,200)
+ctx.lineTo(600-28.57*5,200)
+ctx.lineTo(600-28.57*5,400)
+ctx.lineTo(600-28.57*6,400)
+ctx.lineTo(600-28.57*6,200)
 ctx.moveTo(370,265)
-ctx.lineTo(595,265)
+ctx.lineTo(600,265)
 ctx.moveTo(370,334)
-ctx.lineTo(595,335)
+ctx.lineTo(600,335)
 ctx.moveTo(230,370)
 ctx.lineTo(370,370)
 
@@ -202,6 +413,7 @@ ctx.lineTo(370,230)
 
 ctx.moveTo(400,400)
 ctx.lineTo(370,370)
+
 
 
       ctx.stroke();
@@ -229,43 +441,14 @@ ctx.lineTo(370,370)
       dibujarFichas();
     }
 
-    function fichaBajoMouse(x, y) {
-      for (let ficha of fichas) {
-        let dx = ficha.x - x;
-        let dy = ficha.y - y;
-        if (Math.sqrt(dx * dx + dy * dy) < 20) {
-          return ficha;
-        }
-      }
-      return null;
-    }
+    const coloresTurno = ["red", "orange", "green", "blue"];
+    let turnoActual = 0; // Índice del color actual
 
-    canvas.addEventListener("mousedown", function (e) {
-      const rect = canvas.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
-      fichaSeleccionada = fichaBajoMouse(mouseX, mouseY);
-      if (fichaSeleccionada) fichaSeleccionada.dragging = true;
-    });
+    document.getElementById("turnoTexto").textContent =
+  "Turno: " + coloresTurno[(turnoActual + 1) % coloresTurno.length];
 
-    canvas.addEventListener("mousemove", function (e) {
-      if (fichaSeleccionada && fichaSeleccionada.dragging) {
-        const rect = canvas.getBoundingClientRect();
-        fichaSeleccionada.x = e.clientX - rect.left;
-        fichaSeleccionada.y = e.clientY - rect.top;
-        redibujarTodo();
-      }
-    });
-
-    canvas.addEventListener("mouseup", function () {
-      if (fichaSeleccionada) fichaSeleccionada.dragging = false;
-      fichaSeleccionada = null;
-    });
-
-    img.onload = function () {
-      redibujarTodo();
-    };
   </script>
+
 </body>
 </html>
 
