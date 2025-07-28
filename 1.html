@@ -2,39 +2,71 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Parchís con Fichas Móviles</title>
+  <title>Parchís en Página Web</title>
   <style>
- body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: #333;
-      font-family: sans-serif;
-      color: white;
-    }
-    #parchis {
-      border: 2px solid white;
-      margin-bottom: 20px;
-    }
-    #dados {
-      border: 2px solid white;
-      margin-bottom: 10px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background: #555;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #777;
-    }
-  </style>  </style>
+   /* 1. Importar fuente retro */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+  --grad-primary: linear-gradient(135deg, #ff416c, #ff4b2b);
+  --grad-secondary: linear-gradient(135deg, #11998e, #38ef7d);
+  --highlight: #f9d423;
+  --dark-bg: #111;
+}
+
+/* 2. Reset y cuerpo */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  margin-top: 10px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: radial-gradient(circle, #222, var(--dark-bg));
+  font-family: 'Press Start 2P', sans-serif;
+  color: #eee;
+  overflow: hidden;
+}
+
+/* 3. Tablero (#parchis) */
+#parchis {
+  width: 600px;
+  height: 600px;
+  border: 4px solid var(--highlight);
+  border-radius: 20px;
+  box-shadow:
+    inset 0 0 20px rgba(0,0,0,0.7),
+    0 0 30px rgba(249,212,35,0.6);
+  background: var(--grad-primary);
+  margin-bottom: 0;
+  position: relative;
+}
+
+h1 {
+  font-size: 50px;
+  margin-bottom: 30px
+}
+
+
+button {
+  width: 100px;
+  height: 60px;
+  border-radius: 20px;
+  border: 4px solid var(--highlight);
+  background-color:#38ef7d;
+  color:#222;
+  box-shadow:
+    inset 0 0 20px rgba(0,0,0,0.7),
+    0 0 30px rgba(249,212,35,0.6);
+}
+  </style>
 </head>
 <body>
+  <h1>PARCHIS WEB 😎</h1>
   <canvas id="parchis" width="600" height="600"></canvas>
   <canvas id="dados" width="200" height="100"></canvas>
   <button onclick="lanzarDados()">Lanzar Dados</button>
